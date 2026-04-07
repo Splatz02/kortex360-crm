@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { LayoutDashboard, Users, Kanban, Calendar, DollarSign, LogOut, Settings } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
@@ -19,7 +18,6 @@ const navigation = [
 export default function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session } = useSession()
   const { permissions, role, isAdmin } = usePermissions()
   const [personalization, setPersonalization] = useState<{
     companyName: string
@@ -28,11 +26,12 @@ export default function Sidebar() {
   })
 
   // Check page access permissions
-  const canAccessDashboard = canViewDashboard(permissions, role)
-  const canAccessContacts = canViewContacts(permissions, role)
-  const canAccessPipeline = permissions?.pages?.pipeline !== false
-  const canAccessFollowups = permissions?.pages?.followups !== false
-  const canAccessPayments = permissions?.pages?.payments !== false
+  const canAccessDashboard = isAdmin || permissions?.pages?.dashboard === true
+  const canAccessContacts = isAdmin || permissions?.pages?.contacts === true
+  const canAccessPipeline = isAdmin || permissions?.pages?.pipeline === true
+  const canAccessFollowups = isAdmin || permissions?.pages?.followups === true
+  const canAccessPayments = isAdmin || permissions?.pages?.payments === true
+  const canAccessSettings = isAdmin || permissions?.pages?.settings === true
 
   // Redirect if dashboard access is denied
   useEffect(() => {
@@ -111,7 +110,7 @@ export default function Sidebar() {
         </nav>
         
         {/* Settings Link - Only for admin */}
-        {isAdmin && (
+        {canAccessSettings && (
           <div className="px-2 py-2 border-t" style={{ borderColor: '#2a2a2a' }}>
             <Link
               href="/settings"
