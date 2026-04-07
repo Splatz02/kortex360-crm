@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id               String          @id @default(cuid())
+  firstName        String
+  lastName         String
+  title            String?
+  company          String?
+  email            String?
+  phone            String?
+  website          String?
+  linkedinUrl      String?
+  address          String?
+  state            String?
+  country          String?
+  timezone         String?
+  icpStatus        String          @default("Cold")
+  serviceQualifier String?
+  phoneType        String          @default("Unknown")
+  contactStatus    String          @default("New")
+  interestStatus   String          @default("Not Yet Asked")
+  smsOptIn         String          @default("Pending")
+  oneTimeDealValue Float           @default(0)
+  monthlyDealValue Float           @default(0)
+  pipelineStatus   String          @default("not_yet_called")
+  assetLink        String?
+  assetNotes       String?
+  demoLinks        String?
+  callComments     String?
+  followUpNote     String?
+  leadNotes        String?
+  outreachHistory  String?
+  environment      String          @default("cold_calling")
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deals            Deal[]
+  followUps        FollowUp[]
+  payments         Payment[]
+  communications   Communication[]
+}
+
+model Deal {
+  id        String    @id @default(cuid())
+  contactId String
+  contact   Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  value     Float
+  stage     String    @default("not_yet_called")
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  closedAt  DateTime?
+}
+
+model FollowUp {
+  id        String   @id @default(cuid())
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  dueDate   DateTime
+  type      String
+  status    String   @default("pending")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id            String         @id @default(cuid())
+  paymentId     String         @unique
+  contactId     String?
+  contact       Contact?       @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  title         String?
+  type          String
+  amount        Float
+  category      String?
+  description   String?
+  date          DateTime       @default(now())
+  recurringType String         @default("one_time")
+  startDate     DateTime?
+  createdAt     DateTime       @default(now())
+  files         PaymentFile[]
+}
+
+model PaymentFile {
+  id         String   @id @default(cuid())
+  paymentId  String
+  payment    Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  filename   String
+  fileType   String
+  filePath   String
+  createdAt  DateTime @default(now())
+}
+
+model Communication {
+  id         String   @id @default(cuid())
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  type       String
+  direction  String
+  content    String?
+  status     String   @default("manual")
+  timestamp  DateTime @default(now())
+}
+
+model TeamMember {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  name       String
+  role       String   @default("member") // admin, member
+  permissions String  @default("{}") // JSON string for permissions
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model PersonalizationSettings {
+  id              String   @id @default("default")
+  companyName    String   @default("")
+  logoPath       String?  @default("")
+  displayMode   String   @default("company_name") // "company_name" or "logo"
+  updatedAt      DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
