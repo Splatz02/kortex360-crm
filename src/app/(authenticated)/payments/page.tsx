@@ -591,8 +591,8 @@ export default function PaymentsPage() {
 
       {/* Add Payment Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="rounded-lg shadow-xl w-full max-w-md m-4 p-6" style={{ backgroundColor: '#1a1a1a', border: '1px solid #2a2a2a' }}>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-start justify-center z-50 overflow-y-auto p-4">
+          <div className="rounded-lg shadow-xl w-full max-w-md p-6 my-8 max-h-[calc(100vh-4rem)] overflow-y-auto" style={{ backgroundColor: '#1a1a1a', border: '1px solid #2a2a2a' }}>
             <h2 className="text-xl font-semibold mb-4" style={{ color: '#f5f5f5' }}>Add Transaction</h2>
             <form onSubmit={createPayment}>
               <div className="space-y-4">
@@ -698,8 +698,8 @@ export default function PaymentsPage() {
 
       {/* Edit Payment Modal */}
       {editingPayment && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="rounded-lg shadow-xl w-full max-w-md m-4 p-6" style={{ backgroundColor: '#1a1a1a', border: '1px solid #2a2a2a' }}>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-start justify-center z-50 overflow-y-auto p-4">
+          <div className="rounded-lg shadow-xl w-full max-w-md p-6 my-8 max-h-[calc(100vh-4rem)] overflow-y-auto" style={{ backgroundColor: '#1a1a1a', border: '1px solid #2a2a2a' }}>
             <h2 className="text-xl font-semibold mb-4" style={{ color: '#f5f5f5' }}>Edit Transaction</h2>
             <form onSubmit={updatePayment}>
               <div className="space-y-4">
