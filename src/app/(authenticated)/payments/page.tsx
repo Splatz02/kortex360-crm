@@ -485,10 +485,10 @@ export default function PaymentsPage() {
         ) : payments.length === 0 ? (
           <div className="p-8 text-center" style={{ color: '#9ca3af' }}>No transactions yet</div>
         ) : (
-          <div className="overflow-x-auto md:overflow-x-visible relative">
+          <div className="w-full overflow-x-auto relative">
             <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-[#1a1a1a] to-transparent pointer-events-none z-10 md:hidden" />
             <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-[#1a1a1a] to-transparent pointer-events-none z-10 md:hidden" />
-            <table className="min-w-[800px] divide-y" style={{ borderColor: '#2a2a2a' }}>
+            <table className="min-w-[1400px] w-full divide-y" style={{ borderColor: '#2a2a2a' }}>
             <thead style={{ backgroundColor: '#222222' }}>
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium" style={{ color: '#9ca3af' }}>Date</th>
